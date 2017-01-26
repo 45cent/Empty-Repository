@@ -1,0 +1,5 @@
+sceneSetups:
+- path: C:/Users/Max/Downloads/Unity-20170125T025850Z/Unity/New Unity Project/Assets/Test
+    Scene.unity
+  isLoaded: 1
+  isActive: 1
