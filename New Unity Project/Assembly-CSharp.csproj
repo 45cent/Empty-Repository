@@ -46,7 +46,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\ZombieCube_FREE\Scripts\NewBehaviourScript.cs" />
      <Compile Include="Assets\ZombieCube_FREE\Scripts\SimplePlatformController.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
