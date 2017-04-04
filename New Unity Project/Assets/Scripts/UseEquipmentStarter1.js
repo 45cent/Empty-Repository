@@ -47,12 +47,16 @@ function Update () {
 
 private function HitTarget (hit : RaycastHit2D) {
 	// Try to get the destroyable component tied to what we are hitting
-    var destroyable = hit.collider.GetComponent(DestroyableStarter);
+	var destroyable = hit.collider.GetComponent(DestroyableStarter);
 
 	// if it exists
-    if (destroyable != null) {destroyable.TakeDamage(damage); Instantiate(sparksPrefab, hit.point, Quaternion.identity);
+	if (destroyable != null) {
+		
 		// Add damage to the block
+		destroyable.TakeDamage (damage);
+
 		// Give feedback to let user know they've hit the block
+		Instantiate (sparksPrefab, hit.point, Quaternion.identity);
 	}
 }
 
@@ -71,28 +75,22 @@ private function HasGroundNeighbor (position : Vector3) {
 
 private function PlaceObject (position : Vector3) {
 	if (currentItem != null) {
-		position.x -= gridOffset.x;
-		position.y -= gridOffset.y;
-		var i =	Mathf.RoundToInt (position.x / gridSize.x);
-		var j =	Mathf.RoundToInt (position.y / gridSize.y);
-		position.x = i * gridSize.x + gridOffset.x;
-		position.y = j * gridSize.y + gridOffset.y;
-		currentItem.SetActive(true);
-		currentItem.transform.position = position;
-		// Create a new instance of our saved item and make it active
+		var inventoryManager = GetComponent(InventoryManager);
+		if (inventoryManager.RemoveFromInventory (currentItem)) {
+			position.x -= gridOffset.x;
+			position.y -= gridOffset.y;
+			var i =	Mathf.RoundToInt (position.x / gridSize.x);
+			var j =	Mathf.RoundToInt (position.y / gridSize.y);
+			position.x = i * gridSize.x + gridOffset.x;
+			position.y = j * gridSize.y + gridOffset.y;
+
+			// Create a new instance of our saved item and make it active
+			var clonedItem = Instantiate (currentItem, position, Quaternion.identity);
+			clonedItem.SetActive(true);
+		}
 	}
 }
 
 public function SetCurrentItem (item : GameObject) {
-	var newItemName = item.transform.name.Replace("(Clone)","").Trim();
-	var currentItemName = "";
-	if (currentItem != null) {
-		currentItemName = currentItem.transform.name.Replace("(Clone)","").Trim();
-	}
-	
-	if ((currentItem == null) || (currentItemName != newItemName)) { currentItem = Instantiate(item);
-	    currentItem.SetActive(false);
-		// Create instance of item to use for building more tiles
-		// Set our instance as inactive to avoid having it appear before we want to place it.
-	}
+	currentItem = item;
 }
